@@ -1,0 +1,23 @@
+*, body {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+body {
+	margin:0;
+	padding:0;
+}
+#gameCanvas {
+	cursor: none;
+}
+
+#debug-window {
+	background-color:#eee;
+	position: absolute;
+	bottom:0;
+	padding:10px 0;
+	right:0;
+	text-align:right;
+	width:100%;
+}
+#debug-window.hidden {
+	display:none;
+}
