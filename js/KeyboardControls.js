@@ -1,10 +1,18 @@
 
 console.log('keys add');
-function KeyboardControls(o, options) {
-	this.object = o;
+function KeyboardControls(playerObject, cameraObject, options) {
+	this.player = playerObject;
+	this.camera = cameraObject;
 	options = options || {};
 	this.domElement = options.domElement || document;
-	this.moveSpeed = options.moveSpeed || 1;
+	this.moveSpeed = options.moveSpeed || 2;
+	this.minSpeed = options.minSpeed || 1;
+	this.maxSpeed = options.maxSpeed || 3;
+	this.cameraOffset = new THREE.Vector3(
+		playerObject.position.x + cameraObject.position.x,
+		playerObject.position.y + cameraObject.position.y,
+		playerObject.position.z + cameraObject.position.z
+		);
 	
 	this.domElement.addEventListener( 'keydown', this.onKeyDown.bind(this), false );
 	this.domElement.addEventListener( 'keyup', this.onKeyUp.bind(this), false );
@@ -12,10 +20,74 @@ function KeyboardControls(o, options) {
 
 KeyboardControls.prototype = {
 	update: function() {
-		if (this.moveForward)	this.object.translateZ(-this.moveSpeed);
-		if (this.moveBackward)	this.object.translateZ( this.moveSpeed);
-		if (this.moveLeft)		this.object.translateX(-this.moveSpeed);
-		if (this.moveRight)		this.object.translateX( this.moveSpeed);
+		var move = {
+			count: 0,
+			vert: 0,
+			horz: 0,
+		};
+		if (this.moveForward) {
+			move.count++;
+			move.vert--;
+			//this.player.translateZ(-this.moveSpeed);
+		}
+		if (this.moveBackward) {
+			move.count++;
+			move.vert++;
+			//this.player.translateZ( this.moveSpeed);
+		}
+		if (this.moveLeft) {
+			move.count++;
+			move.horz--;
+			//this.player.translateX(-this.moveSpeed);
+		}
+		if (this.moveRight) {
+			move.count++;
+			move.horz++;
+			//this.player.translateX( this.moveSpeed);
+		}
+
+		if(move.count != 0) { // no movement, do nothing
+			var angle = 0;
+			if( move.count == 1 || move.count == 3 ) { // orthogonal movement
+				if ( move.vert == 1 ) {
+					angle = 0;
+				} else if ( move.horz == 1 ) {
+					angle = 90;
+				} else if ( move.vert == -1 ) {
+					angle = 180;
+				} else if ( move.horz == -1 ) {
+					angle = 270;
+				}
+			} else { // diagonal movement
+
+				if ( move.vert == 1 && move.horz == 1 ) {
+					angle = 45;
+				} else if ( move.vert == -1 && move.horz == 1 ) {
+					angle = 135;
+				} else if ( move.vert == -1 && move.horz == -1 ) {
+					angle = 225; // WORKING
+				} else if ( move.vert == 1 && move.horz == -1 ) {
+					angle = 315;
+				}
+
+				// console.log('Angle: '+angle);
+				// We should instead us a rolling angle type movement scheme as in, swinging from north to east isn't instant.
+				// This is interesting, because it may reward stopping with precision while rewards running with speed
+			}
+
+			var newZ = this.moveSpeed * Math.cos(angle * (Math.PI / 180));
+			var newX = this.moveSpeed * Math.sin(angle * (Math.PI / 180));
+			var playerZDiff = newZ + this.player.position.z;
+			var playerXDiff = newX + this.player.position.x;
+			this.player.translateZ( newZ );
+			this.player.translateX( newX );
+		}
+
+		// Move the camera and point it at the player
+		this.camera.position.set(this.player.position.x + this.cameraOffset.x,
+								this.player.position.y + this.cameraOffset.y,
+								this.player.position.z + this.cameraOffset.z);
+    	this.camera.lookAt(this.player.position);
 	},
 	onKeyDown: function (event) {
 		switch (event.keyCode) {

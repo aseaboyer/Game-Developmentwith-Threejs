@@ -79,7 +79,7 @@
 
 				player.obj.scale.y = 2;
 				player.obj.position.x = 0;
-				player.obj.position.y = 0;
+				player.obj.position.y = 1;
 				player.obj.position.z = 0;
 
 				scene.add( player.obj );
@@ -128,7 +128,6 @@
 				}
 */
 				// Lights
-
 				var ambientLight = new THREE.AmbientLight( Math.random() * 0x10 );
 				scene.add( ambientLight );
 
@@ -159,7 +158,7 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
-				controller = new KeyboardControls(player.obj);
+				controller = new KeyboardControls( player.obj, camera ); // pass a camera offset?
 
 			}
 
@@ -194,7 +193,7 @@
 				// update the camera position in space now.
 
 
-				camera.lookAt( scene.position );
+				//camera.lookAt( scene.position );
 
 				renderer.render( scene, camera );
 
