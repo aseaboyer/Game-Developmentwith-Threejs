@@ -1,8 +1,8 @@
-
-console.log('keys add');
-function KeyboardControls(playerObject, cameraObject, options) {
+function PlayerController(playerObject, cameraObject, options) {
 	this.player = playerObject;
 	this.camera = cameraObject;
+	this.attackSpeed = 1000;
+	this.lastAttack = Date.now();
 	options = options || {};
 	this.domElement = options.domElement || document;
 	this.moveSpeed = options.moveSpeed || 2;
@@ -18,8 +18,17 @@ function KeyboardControls(playerObject, cameraObject, options) {
 	this.domElement.addEventListener( 'keyup', this.onKeyUp.bind(this), false );
 }
 
-KeyboardControls.prototype = {
+PlayerController.prototype = {
 	update: function() {
+		this.move();
+
+		// Move the camera and point it at the player
+	/*	this.camera.position.set(this.player.position.x + this.cameraOffset.x,
+								this.player.position.y + this.cameraOffset.y,
+								this.player.position.z + this.cameraOffset.z);
+    	this.camera.lookAt(this.player.position);*/
+	},
+	move: function() {
 		var move = {
 			count: 0,
 			vert: 0,
@@ -82,12 +91,6 @@ KeyboardControls.prototype = {
 			this.player.translateZ( newZ );
 			this.player.translateX( newX );
 		}
-
-		// Move the camera and point it at the player
-		this.camera.position.set(this.player.position.x + this.cameraOffset.x,
-								this.player.position.y + this.cameraOffset.y,
-								this.player.position.z + this.cameraOffset.z);
-    	this.camera.lookAt(this.player.position);
 	},
 	onKeyDown: function (event) {
 		switch (event.keyCode) {
@@ -118,5 +121,27 @@ KeyboardControls.prototype = {
 			case 39: // right 
 			case 68: this.moveRight = false; break; // D
 		}
-	}
+	},
+	validAttack: function( targetLocation ) {
+		//console.log('player Attacks to: ' );
+		//console.log( targetLocation );
+
+		console.log( Date.now() +' vs ' + (this.lastAttack + this.attackSpeed) );
+
+		if( Date.now() >= (this.lastAttack + this.attackSpeed) ) {
+			console.log( 'can attack' );
+/*
+			var newCoin = new CoinThrown( this.player.position, targetLocation ); // pass it the start and destination vector points
+
+			return newCoin;
+			*/
+			return true;
+		}
+
+		console.log( 'CAN NOT attack!!!!!' );
+		return null;
+	},
+	registerAttack: function( targetLocation ) {
+			this.lastAttack = Date.now();
+	},
 };
