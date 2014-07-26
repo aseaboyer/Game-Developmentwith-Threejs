@@ -86,6 +86,9 @@ PlayerController.prototype = {
 
 			var newZ = this.moveSpeed * Math.cos(angle * (Math.PI / 180));
 			var newX = this.moveSpeed * Math.sin(angle * (Math.PI / 180));
+
+			// We now have the destination, check to see if it intersects something
+
 			var playerZDiff = newZ + this.player.position.z;
 			var playerXDiff = newX + this.player.position.x;
 			this.player.translateZ( newZ );
@@ -129,7 +132,7 @@ PlayerController.prototype = {
 		console.log( Date.now() +' vs ' + (this.lastAttack + this.attackSpeed) );
 
 		if( Date.now() >= (this.lastAttack + this.attackSpeed) ) {
-			console.log( 'can attack' );
+			//console.log( 'can attack' );
 /*
 			var newCoin = new CoinThrown( this.player.position, targetLocation ); // pass it the start and destination vector points
 
@@ -138,7 +141,7 @@ PlayerController.prototype = {
 			return true;
 		}
 
-		console.log( 'CAN NOT attack!!!!!' );
+		//console.log( 'CAN NOT attack!!!!!' );
 		return null;
 	},
 	registerAttack: function( targetLocation ) {

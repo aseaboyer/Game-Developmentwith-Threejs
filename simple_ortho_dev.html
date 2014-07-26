@@ -89,6 +89,7 @@
 				selectable.push(player);
 
 				scene.add( player );
+
 				clock = new THREE.Clock();
 /*
 				// Ground
@@ -207,12 +208,9 @@
 
 							coinController = new CoinThrown( coin, player.position, intersects[0].object.position ); // pass a camera offset?
 							coins.push(coinController);
+							coin.lookAt(intersects[0].object.position);
 
 							scene.add(coin);
-
-							// add it to the 
-
-							console.log(coin)
 						}
 					}
 				}, false);
@@ -243,14 +241,23 @@
 			}
 
 			function render() {
+				clockDelta = clock.getDelta();
 
-				playerController.update(clock.getDelta());
+				playerController.update(clockDelta);
 
-				cameraController.update(clock.getDelta());// update the camera position in space now.
+				cameraController.update(); // update the camera position in space now.
 
-				// for each coins // @aseaboyer - update this next!
+				var coinCount = coins.length; // for each coins, update their position
+				for (i = 0; i < coinCount; i++) { 
+					var updateResponse = coins[i].update(clockDelta, enemies);
 
-				//camera.lookAt( scene.position );
+					if(updateResponse == 'destroy') {
+						coins.splice(i, 1);
+						//console.log('Remove the coin at '+ i);
+						i--; // catch the count up
+						coinCount--; // update the coin count as well
+					}
+				}
 
 				renderer.render( scene, camera );
 
