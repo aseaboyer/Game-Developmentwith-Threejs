@@ -211,7 +211,7 @@ function animate() {
 function render() {
 	clockDelta = clock.getDelta();
 
-	playerController.update(clockDelta);
+	playerController.update(clockDelta, enemies);
 
 	cameraController.update(); // update the camera position in space now.
 
