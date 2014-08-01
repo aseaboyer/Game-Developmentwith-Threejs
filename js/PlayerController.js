@@ -18,12 +18,14 @@ function PlayerController(playerObject, cameraObject, options) {
 	this.purse = {
 		max: 100,
 		current: 20,
+		gui: {},
 		remove: function( amt ) {
 			this.current -= amt;
 			console.log("Purse at: "+this.current)
 			if(this.current <= 0 ) {
 				console.log("Player is dead!");
 			}
+			this.updateGUI();
 		},
 		earn: function( amt ) {
 			this.current += amt;
@@ -32,6 +34,14 @@ function PlayerController(playerObject, cameraObject, options) {
 				this.current = this.max
 				console.log("Player is dead!");
 			}
+			this.updateGUI();
+		},
+		setGUI: function( guiOBJ ) {
+			this.gui = guiOBJ;
+			this.updateGUI();
+		},
+		updateGUI: function() {
+			this.gui.innerHTML = this.current;
 		},
 	};
 	

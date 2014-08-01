@@ -139,6 +139,8 @@ function init() {
 	projector = new THREE.Projector();
 
 	playerController = new PlayerController( player, camera ); // pass a camera offset?
+	playerController.purse.setGUI( document.getElementById('gui-coin-count') );
+
 	cameraController = new CameraController( camera );
 	cameraController.setTarget(player);
 	cameraController.setOffset( camera.position.x, camera.position.y, camera.position.z );

@@ -13,6 +13,15 @@ body {
 	cursor: none;
 }
 
+#gui-bar {
+	position: absolute;
+	text-align: left;
+	top: 0;
+	right: 0;
+	padding-right: 10px;
+	width:200px;
+}
+
 #debug-window {
 	background-color:#eee;
 	position: absolute;
