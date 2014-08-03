@@ -7,6 +7,7 @@ var selectable = new Array();
 var enemies = new Array();
 var ground;
 var coins = new Array();
+var loots = new Array();
 
 function init() {
 
@@ -102,6 +103,8 @@ function init() {
 		scene.add( enemy );
 	//	enemies.push( new EnemyController( enemy ) ); // pass a camera offset?
 		enemies.push(enemy);
+		var enemyPurse = new Purse (1,1, enemy);
+		enemies[i].purse = enemyPurse;
 	}
 	
 	// Lights
@@ -148,7 +151,6 @@ function init() {
     //createPlayer();
     //createEnemies();
     createClickEvents();
-
 }
 
 function createClickEvents() {

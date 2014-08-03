@@ -7,6 +7,7 @@ function CoinThrown( theObject, startPos, targetPos ) {
 	this.lifeTime = 3500;
 	this.spawned = Date.now();
 	this.leadingRay = new THREE.Raycaster(); // don't recreate each movement cycle
+	this.damage = 1;
 }
 
 CoinThrown.prototype = {
@@ -27,10 +28,11 @@ CoinThrown.prototype = {
 		var collisions = this.leadingRay.intersectObjects(hitlist);
 		if(collisions.length) {
 			if(collisions[0].distance < moveThisCycle ) {
-				console.log("Bullet speed: "+moveThisCycle+" hits @ "+ collisions[0].distance);
+				//console.log("Coin speed: "+moveThisCycle+" hits @ "+ collisions[0].distance);
+				collisions[0].object.purse.remove(this.damage);
 				//@aseaboyer - deal damage if we can deal damage, everything needs a life meter/script (@PlayerController is a bad manager for this reason?)
 			} else {
-			//	console.log("Bullet found a target distance @ "+collisions[0].distance);
+			//	console.log("Coin found a target distance @ "+collisions[0].distance);
 			}
 		}
 

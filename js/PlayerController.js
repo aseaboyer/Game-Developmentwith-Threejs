@@ -15,35 +15,7 @@ function PlayerController(playerObject, cameraObject, options) {
 		);
 	this.playersRay = new THREE.Raycaster(); // don't recreate each movement cycle
 
-	this.purse = {
-		max: 100,
-		current: 20,
-		gui: {},
-		remove: function( amt ) {
-			this.current -= amt;
-			console.log("Purse at: "+this.current)
-			if(this.current <= 0 ) {
-				console.log("Player is dead!");
-			}
-			this.updateGUI();
-		},
-		earn: function( amt ) {
-			this.current += amt;
-			console.log("Purse at: "+this.current)
-			if(this.current > this.max ) {
-				this.current = this.max
-				console.log("Player is dead!");
-			}
-			this.updateGUI();
-		},
-		setGUI: function( guiOBJ ) {
-			this.gui = guiOBJ;
-			this.updateGUI();
-		},
-		updateGUI: function() {
-			this.gui.innerHTML = this.current;
-		},
-	};
+	this.purse = new Purse( 100, 20 );
 	
 	this.domElement.addEventListener( 'keydown', this.onKeyDown.bind(this), false );
 	this.domElement.addEventListener( 'keyup', this.onKeyUp.bind(this), false );
